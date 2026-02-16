@@ -5,9 +5,9 @@ import { fileURLToPath } from 'node:url';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const interceptionPublicDir = path.join(__dirname, 'public');
-const expectsWaitsPublicDir = path.join(__dirname, '../../expects-waits/app/public');
-const apiContextPublicDir = path.join(__dirname, '../../api-request-context/app/public');
+const interceptionPublicDir = path.join(__dirname, 'topics/interception/app/public');
+const expectsWaitsPublicDir = path.join(__dirname, 'topics/expects-waits/app/public');
+const apiContextPublicDir = path.join(__dirname, 'topics/api-request-context/app/public');
 const port = 4173;
 let labItems = [];
 let labItemId = 1;
