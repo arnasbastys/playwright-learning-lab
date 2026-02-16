@@ -38,6 +38,12 @@ test.describe('expects and waits topic', () => {
     await expect(page.getByTestId('job-progress')).toHaveText('100%');
   });
 
+  test('async matchers retry until phase and list settle', async ({ page }) => {
+    await expect(page.getByTestId('event-phase')).toHaveText('phase: ready');
+    await expect(page.locator('[data-testid="event-feed"] li')).toHaveCount(3);
+    await expect(page.locator('[data-testid="event-feed"] li').nth(2)).toHaveText('event-3');
+  });
+
   test('custom matcher can express domain intent for attribute-based states', async ({ page }) => {
     const panel = page.getByTestId('save-panel');
 
