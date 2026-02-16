@@ -8,6 +8,7 @@ const __dirname = path.dirname(__filename);
 const interceptionPublicDir = path.join(__dirname, 'topics/interception/app/public');
 const expectsWaitsPublicDir = path.join(__dirname, 'topics/expects-waits/app/public');
 const apiContextPublicDir = path.join(__dirname, 'topics/api-request-context/app/public');
+const emulationContextPublicDir = path.join(__dirname, 'topics/emulation-context/app/public');
 const port = 4173;
 let labItems = [];
 let labItemId = 1;
@@ -16,6 +17,38 @@ const catalogProducts = [
   { id: 'P-002', title: 'Desk Lamp', price: 4900, inStock: true },
   { id: 'P-003', title: 'Mechanical Keyboard', price: 15900, inStock: false }
 ];
+
+function getNearbyPayload(lat, lng) {
+  if (Math.abs(lat - 54.6872) < 1 && Math.abs(lng - 25.2797) < 1) {
+    return {
+      region: 'Vilnius',
+      places: [
+        { name: 'Old Town Coffee', type: 'cafe' },
+        { name: 'Neris Riverside Run Club', type: 'sports' },
+        { name: 'Bernardine Garden', type: 'park' }
+      ]
+    };
+  }
+
+  if (Math.abs(lat - 37.7749) < 1 && Math.abs(lng + 122.4194) < 1) {
+    return {
+      region: 'San Francisco',
+      places: [
+        { name: 'Mission Market', type: 'groceries' },
+        { name: 'Golden Gate Park', type: 'park' },
+        { name: 'Blue Bottle Hayes', type: 'cafe' }
+      ]
+    };
+  }
+
+  return {
+    region: 'Generic',
+    places: [
+      { name: 'City Center Hub', type: 'transit' },
+      { name: 'Neighborhood Grocery', type: 'groceries' }
+    ]
+  };
+}
 
 const mimeTypes = {
   '.html': 'text/html; charset=utf-8',
@@ -131,6 +164,19 @@ createServer(async (req, res) => {
     return;
   }
 
+  if (url.pathname === '/api/nearby' && req.method === 'GET') {
+    const lat = Number(url.searchParams.get('lat'));
+    const lng = Number(url.searchParams.get('lng'));
+
+    if (!Number.isFinite(lat) || !Number.isFinite(lng)) {
+      sendJson(res, 400, { message: 'lat and lng query params are required.' });
+      return;
+    }
+
+    sendJson(res, 200, getNearbyPayload(lat, lng));
+    return;
+  }
+
   if (url.pathname === '/expects-waits' || url.pathname.startsWith('/expects-waits/')) {
     const nestedPath = url.pathname.replace('/expects-waits', '') || '/';
     await serveStatic(res, expectsWaitsPublicDir, nestedPath);
@@ -140,6 +186,12 @@ createServer(async (req, res) => {
   if (url.pathname === '/api-context' || url.pathname.startsWith('/api-context/')) {
     const nestedPath = url.pathname.replace('/api-context', '') || '/';
     await serveStatic(res, apiContextPublicDir, nestedPath);
+    return;
+  }
+
+  if (url.pathname === '/emulation-context' || url.pathname.startsWith('/emulation-context/')) {
+    const nestedPath = url.pathname.replace('/emulation-context', '') || '/';
+    await serveStatic(res, emulationContextPublicDir, nestedPath);
     return;
   }
 

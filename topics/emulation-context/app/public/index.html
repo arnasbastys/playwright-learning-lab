@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Emulation Context Lab</title>
+    <link rel="stylesheet" href="/emulation-context/styles.css" />
+  </head>
+  <body>
+    <main class="wrap">
+      <p class="eyebrow">Topic 05</p>
+      <h1>Context Emulation Lab</h1>
+      <p class="lead">
+        Playwright can mimic user context (location, permissions, locale, timezone, device profile, network). This page is designed to expose those knobs clearly.
+      </p>
+
+      <section class="panel">
+        <h2>Environment Snapshot</h2>
+        <dl>
+          <div><dt>Language</dt><dd data-testid="locale-value"></dd></div>
+          <div><dt>Timezone</dt><dd data-testid="timezone-value"></dd></div>
+          <div><dt>Input Profile</dt><dd data-testid="input-profile"></dd></div>
+          <div><dt>Currency Sample</dt><dd data-testid="currency-sample"></dd></div>
+        </dl>
+      </section>
+
+      <section class="panel">
+        <h2>Nearby Places</h2>
+        <div class="actions">
+          <button id="locate-btn" type="button">Use my location</button>
+          <button id="refresh-btn" type="button" disabled>Refresh nearby</button>
+        </div>
+        <p data-testid="nearby-status" class="muted">Waiting for location…</p>
+        <ul data-testid="nearby-list"></ul>
+      </section>
+    </main>
+
+    <script type="module" src="/emulation-context/app.js"></script>
+  </body>
+</html>
