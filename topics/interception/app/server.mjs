@@ -8,9 +8,15 @@ const __dirname = path.dirname(__filename);
 const interceptionPublicDir = path.join(__dirname, 'public');
 const expectsWaitsPublicDir = path.join(__dirname, '../../expects-waits/app/public');
 const apiContextPublicDir = path.join(__dirname, '../../api-request-context/app/public');
+const responseSurgeryPublicDir = path.join(__dirname, '../../response-surgery/app/public');
 const port = 4173;
 let labItems = [];
 let labItemId = 1;
+const catalogProducts = [
+  { id: 'P-001', title: 'Trail Backpack', price: 12900, inStock: true },
+  { id: 'P-002', title: 'Desk Lamp', price: 4900, inStock: true },
+  { id: 'P-003', title: 'Mechanical Keyboard', price: 15900, inStock: false }
+];
 
 const mimeTypes = {
   '.html': 'text/html; charset=utf-8',
@@ -121,6 +127,11 @@ createServer(async (req, res) => {
     return;
   }
 
+  if (url.pathname === '/api/products' && req.method === 'GET') {
+    sendJson(res, 200, { products: catalogProducts });
+    return;
+  }
+
   if (url.pathname === '/expects-waits' || url.pathname.startsWith('/expects-waits/')) {
     const nestedPath = url.pathname.replace('/expects-waits', '') || '/';
     await serveStatic(res, expectsWaitsPublicDir, nestedPath);
@@ -130,6 +141,12 @@ createServer(async (req, res) => {
   if (url.pathname === '/api-context' || url.pathname.startsWith('/api-context/')) {
     const nestedPath = url.pathname.replace('/api-context', '') || '/';
     await serveStatic(res, apiContextPublicDir, nestedPath);
+    return;
+  }
+
+  if (url.pathname === '/response-surgery' || url.pathname.startsWith('/response-surgery/')) {
+    const nestedPath = url.pathname.replace('/response-surgery', '') || '/';
+    await serveStatic(res, responseSurgeryPublicDir, nestedPath);
     return;
   }
 
