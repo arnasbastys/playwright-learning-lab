@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Interception Lab - Checkout Demo</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <main class="shell">
+      <section class="card">
+        <p class="eyebrow">Topic 01</p>
+        <h1>Checkout Edge-Case Playground</h1>
+        <p class="intro">
+          This page intentionally keeps logic simple so network interception in Playwright is easy to reason about.
+        </p>
+
+        <button id="checkout-btn" type="button">Place order</button>
+
+        <p id="status" class="status" role="status" aria-live="polite"></p>
+        <p id="error" class="error" role="alert" aria-live="assertive"></p>
+      </section>
+    </main>
+
+    <script type="module" src="/app.js"></script>
+  </body>
+</html>

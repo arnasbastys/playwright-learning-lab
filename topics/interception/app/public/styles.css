@@ -1,0 +1,89 @@
+:root {
+  color-scheme: light;
+  --bg: #f8f4ea;
+  --card: #fffdf8;
+  --text: #1f2a37;
+  --muted: #526171;
+  --accent: #0b6e4f;
+  --danger: #9f1239;
+  --border: #e6dcc8;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: "Avenir Next", "Segoe UI", sans-serif;
+  color: var(--text);
+  background:
+    radial-gradient(circle at 10% 20%, #f1e6cf 0, transparent 32%),
+    radial-gradient(circle at 90% 80%, #d8ebdf 0, transparent 30%),
+    var(--bg);
+  display: grid;
+  place-items: center;
+  padding: 24px;
+}
+
+.shell {
+  width: min(100%, 720px);
+}
+
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 28px;
+  box-shadow: 0 10px 30px rgba(40, 33, 20, 0.08);
+}
+
+.eyebrow {
+  margin: 0;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 12px;
+}
+
+h1 {
+  margin: 8px 0 12px;
+  font-size: clamp(1.4rem, 1rem + 1.8vw, 2.1rem);
+}
+
+.intro {
+  margin: 0 0 16px;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+button {
+  border: 0;
+  border-radius: 999px;
+  padding: 11px 18px;
+  background: linear-gradient(120deg, #0b6e4f, #0f766e);
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+button[disabled] {
+  opacity: 0.6;
+  cursor: wait;
+}
+
+.status,
+.error {
+  min-height: 1.25rem;
+  margin: 14px 0 0;
+  font-size: 0.98rem;
+}
+
+.status {
+  color: var(--accent);
+}
+
+.error {
+  color: var(--danger);
+}

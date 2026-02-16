@@ -1,4 +1,16 @@
 {
   "name": "playwright-learning-lab",
-  "packageManager": "yarn@4.5.2"
+  "packageManager": "yarn@1.22.22",
+  "devDependencies": {
+    "@playwright/test": "^1.58.2",
+    "typescript": "^5.9.3"
+  },
+  "scripts": {
+    "test": "playwright test",
+    "test:interception": "playwright test topics/interception/tests/interception.spec.ts",
+    "test:ui": "playwright test --ui",
+    "test:headed": "playwright test --project=chromium --headed"
+  },
+  "license": "MIT",
+  "private": true
 }
