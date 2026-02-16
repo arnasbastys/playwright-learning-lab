@@ -7,7 +7,10 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const interceptionPublicDir = path.join(__dirname, 'public');
 const expectsWaitsPublicDir = path.join(__dirname, '../../expects-waits/app/public');
+const apiContextPublicDir = path.join(__dirname, '../../api-request-context/app/public');
 const port = 4173;
+let labItems = [];
+let labItemId = 1;
 
 const mimeTypes = {
   '.html': 'text/html; charset=utf-8',
@@ -24,6 +27,26 @@ function sendJson(res, statusCode, payload, extraHeaders = {}) {
     ...extraHeaders
   });
   res.end(body);
+}
+
+async function readJsonBody(req) {
+  const chunks = [];
+
+  for await (const chunk of req) {
+    chunks.push(chunk);
+  }
+
+  if (chunks.length === 0) {
+    return {};
+  }
+
+  const body = Buffer.concat(chunks).toString('utf-8');
+
+  try {
+    return JSON.parse(body);
+  } catch {
+    return null;
+  }
 }
 
 async function serveStatic(res, publicDir, pathname) {
@@ -50,6 +73,7 @@ async function serveStatic(res, publicDir, pathname) {
 
 createServer(async (req, res) => {
   const url = new URL(req.url ?? '/', `http://${req.headers.host}`);
+  const labItemIdMatch = url.pathname.match(/^\/api\/lab-items\/(\d+)$/);
 
   if (url.pathname === '/api/checkout' && req.method === 'POST') {
     sendJson(res, 200, {
@@ -59,9 +83,53 @@ createServer(async (req, res) => {
     return;
   }
 
+  if (url.pathname === '/api/lab-items' && req.method === 'GET') {
+    sendJson(res, 200, { items: labItems });
+    return;
+  }
+
+  if (url.pathname === '/api/lab-items' && req.method === 'POST') {
+    const payload = await readJsonBody(req);
+
+    if (!payload || typeof payload.title !== 'string' || payload.title.trim() === '') {
+      sendJson(res, 400, { message: 'title is required.' });
+      return;
+    }
+
+    const newItem = {
+      id: labItemId++,
+      title: payload.title.trim(),
+      status: payload.status === 'done' ? 'done' : 'pending'
+    };
+
+    labItems.push(newItem);
+    sendJson(res, 201, { item: newItem });
+    return;
+  }
+
+  if (labItemIdMatch && req.method === 'DELETE') {
+    const id = Number(labItemIdMatch[1]);
+    labItems = labItems.filter((item) => item.id !== id);
+    sendJson(res, 200, { ok: true });
+    return;
+  }
+
+  if (url.pathname === '/api/test-data/reset' && req.method === 'POST') {
+    labItems = [];
+    labItemId = 1;
+    sendJson(res, 200, { ok: true });
+    return;
+  }
+
   if (url.pathname === '/expects-waits' || url.pathname.startsWith('/expects-waits/')) {
     const nestedPath = url.pathname.replace('/expects-waits', '') || '/';
     await serveStatic(res, expectsWaitsPublicDir, nestedPath);
+    return;
+  }
+
+  if (url.pathname === '/api-context' || url.pathname.startsWith('/api-context/')) {
+    const nestedPath = url.pathname.replace('/api-context', '') || '/';
+    await serveStatic(res, apiContextPublicDir, nestedPath);
     return;
   }
 

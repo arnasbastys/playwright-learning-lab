@@ -16,6 +16,8 @@ Small Playwright playground split by topic. Each topic has its own tiny app and 
 - `topics/interception/tests/`: interception cases (success, API errors, malformed payloads, hard network fail)
 - `topics/expects-waits/app/`: async UI playground for matcher-driven waiting
 - `topics/expects-waits/tests/`: waits/assertions (`toHaveText`, `expect.poll`, `toPass`, custom matcher)
+- `topics/api-request-context/app/`: minimal list UI backed by server state
+- `topics/api-request-context/tests/`: seed/cleanup data via API before UI assertions
 
 More topics can be added as siblings, for example `topics/fixtures`, `topics/auth`, `topics/har-replay`.
 
@@ -31,6 +33,7 @@ npx playwright install chromium
 ```bash
 yarn test:interception
 yarn test:expects-waits
+yarn test:api-request-context
 ```
 
 ## Useful scripts
@@ -38,5 +41,6 @@ yarn test:expects-waits
 - `yarn test`: run all topics
 - `yarn test:interception`: run only interception topic
 - `yarn test:expects-waits`: run only expects + waits topic
+- `yarn test:api-request-context`: run APIRequestContext seed/cleanup topic
 - `yarn test:ui`: open Playwright UI mode
 - `yarn test:headed`: run headed Chromium for visual debugging

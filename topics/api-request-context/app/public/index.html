@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>APIRequestContext Lab</title>
+    <link rel="stylesheet" href="/api-context/styles.css" />
+  </head>
+  <body>
+    <main class="wrap">
+      <p class="eyebrow">Topic 03</p>
+      <h1>APIRequestContext Setup Pattern</h1>
+      <p class="lead">
+        This page only renders items from backend state. Tests seed and clean that state via HTTP before touching the UI.
+      </p>
+
+      <section class="panel">
+        <h2>Seeded Items</h2>
+        <p data-testid="item-count" class="muted">Loading...</p>
+        <ul data-testid="item-list"></ul>
+      </section>
+    </main>
+
+    <script type="module" src="/api-context/app.js"></script>
+  </body>
+</html>
