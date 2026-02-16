@@ -18,6 +18,8 @@ Small Playwright playground split by topic. Each topic has its own tiny app and 
 - `topics/expects-waits/tests/`: waits/assertions (`toHaveText`, `expect.poll`, `toPass`, custom matcher)
 - `topics/api-request-context/app/`: minimal list UI backed by server state
 - `topics/api-request-context/tests/`: seed/cleanup data via API before UI assertions
+- `topics/emulation-context/app/`: location/locale/device-aware demo surface
+- `topics/emulation-context/tests/`: geolocation, permissions, locale/timezone, mobile, offline emulation
 
 More topics can be added as siblings, for example `topics/fixtures`, `topics/auth`, `topics/har-replay`.
 
@@ -34,6 +36,7 @@ npx playwright install chromium
 yarn test:interception
 yarn test:expects-waits
 yarn test:api-request-context
+yarn test:emulation-context
 ```
 
 ## Useful scripts
@@ -42,5 +45,6 @@ yarn test:api-request-context
 - `yarn test:interception`: run only interception topic
 - `yarn test:expects-waits`: run only expects + waits topic
 - `yarn test:api-request-context`: run APIRequestContext seed/cleanup topic
+- `yarn test:emulation-context`: run geolocation/locale/device emulation topic
 - `yarn test:ui`: open Playwright UI mode
 - `yarn test:headed`: run headed Chromium for visual debugging
