@@ -15,7 +15,7 @@ test.describe('response surgery topic', () => {
       await route.fulfill({ response, json: payload });
     });
 
-    await page.goto('/response-surgery');
+    await page.goto('/response-surgery.html');
 
     await expect(page.getByTestId('catalog-list')).toContainText('Desk Lamp');
     await expect(page.getByTestId('catalog-list')).toContainText('$0.99');
@@ -33,7 +33,7 @@ test.describe('response surgery topic', () => {
       await route.fulfill({ response, json: payload });
     });
 
-    await page.goto('/response-surgery');
+    await page.goto('/response-surgery.html');
 
     await expect(page.locator('[data-testid="product-corrupt"]')).toHaveCount(1);
   });
@@ -55,7 +55,7 @@ test.describe('response surgery topic', () => {
       await route.fulfill({ response, json: payload });
     });
 
-    await page.goto('/response-surgery');
+    await page.goto('/response-surgery.html');
 
     await expect(page.getByTestId('catalog-state')).toHaveText('4 product(s) loaded.');
     await expect(page.getByTestId('catalog-list')).toContainText('Phantom SSD');
@@ -74,7 +74,7 @@ test.describe('response surgery topic', () => {
       await route.fulfill({ response, json: payload });
     });
 
-    await page.goto('/response-surgery');
+    await page.goto('/response-surgery.html');
 
     await expect(page.locator('.stock-out')).toHaveCount(3);
     await expect(page.locator('.stock-ok')).toHaveCount(0);

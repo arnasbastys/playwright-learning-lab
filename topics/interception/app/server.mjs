@@ -8,7 +8,6 @@ const __dirname = path.dirname(__filename);
 const interceptionPublicDir = path.join(__dirname, 'public');
 const expectsWaitsPublicDir = path.join(__dirname, '../../expects-waits/app/public');
 const apiContextPublicDir = path.join(__dirname, '../../api-request-context/app/public');
-const responseSurgeryPublicDir = path.join(__dirname, '../../response-surgery/app/public');
 const port = 4173;
 let labItems = [];
 let labItemId = 1;
@@ -141,12 +140,6 @@ createServer(async (req, res) => {
   if (url.pathname === '/api-context' || url.pathname.startsWith('/api-context/')) {
     const nestedPath = url.pathname.replace('/api-context', '') || '/';
     await serveStatic(res, apiContextPublicDir, nestedPath);
-    return;
-  }
-
-  if (url.pathname === '/response-surgery' || url.pathname.startsWith('/response-surgery/')) {
-    const nestedPath = url.pathname.replace('/response-surgery', '') || '/';
-    await serveStatic(res, responseSurgeryPublicDir, nestedPath);
     return;
   }
 
