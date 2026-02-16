@@ -1,6 +1,6 @@
 # Playwright Learning Lab
 
-Portfolio-friendly Playwright workspace organized by topic. Each topic has its own app surface and focused test suite so you can grow this repo over time.
+Small Playwright playground split by topic. Each topic has its own tiny app and tests, so I can poke one idea at a time without turning this repo into spaghetti.
 
 ## Stack
 
@@ -12,10 +12,12 @@ Portfolio-friendly Playwright workspace organized by topic. Each topic has its o
 ## Repo shape
 
 - `topics/`
-- `topics/interception/app/`: tiny checkout UI used to explore route interception patterns
-- `topics/interception/tests/`: specs for success, API errors, malformed payloads, and network failures
+- `topics/interception/app/`: fake checkout UI for request mocking and failure states
+- `topics/interception/tests/`: interception cases (success, API errors, malformed payloads, hard network fail)
+- `topics/expects-waits/app/`: async UI playground for matcher-driven waiting
+- `topics/expects-waits/tests/`: waits/assertions (`toHaveText`, `expect.poll`, `toPass`, custom matcher)
 
-Add new topics as sibling folders, for example `topics/fixtures`, `topics/auth`, `topics/har-replay`.
+More topics can be added as siblings, for example `topics/fixtures`, `topics/auth`, `topics/har-replay`.
 
 ## Setup
 
@@ -28,11 +30,13 @@ npx playwright install chromium
 
 ```bash
 yarn test:interception
+yarn test:expects-waits
 ```
 
 ## Useful scripts
 
 - `yarn test`: run all topics
 - `yarn test:interception`: run only interception topic
+- `yarn test:expects-waits`: run only expects + waits topic
 - `yarn test:ui`: open Playwright UI mode
 - `yarn test:headed`: run headed Chromium for visual debugging

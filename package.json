@@ -8,6 +8,7 @@
   "scripts": {
     "test": "playwright test",
     "test:interception": "playwright test topics/interception/tests/interception.spec.ts",
+    "test:expects-waits": "playwright test topics/expects-waits/tests/expects-waits.spec.ts",
     "test:ui": "playwright test --ui",
     "test:headed": "playwright test --project=chromium --headed"
   },

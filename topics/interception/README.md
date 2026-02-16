@@ -1,10 +1,10 @@
 # Interception Topic
 
-This module explores how Playwright network interception can validate frontend behavior under conditions that are hard to reproduce reliably with a real backend.
+This topic is about forcing weird network behavior on purpose, so UI error states can be tested without waiting for a real backend to misbehave.
 
 ## Why this topic matters
 
-Interception lets you test UX for failure paths without unstable environments:
+Interception is great for testing unhappy paths without setup drama:
 
 - transient API failures
 - rate limiting
@@ -24,9 +24,3 @@ Interception lets you test UX for failure paths without unstable environments:
 ```bash
 yarn test:interception
 ```
-
-## Suggested next commits
-
-- add latency simulation and loading-state assertions
-- add one-time route handling to emulate flaky first attempt
-- add fixtures that centralize common route mocks
