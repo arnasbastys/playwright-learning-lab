@@ -5,7 +5,8 @@ import { fileURLToPath } from 'node:url';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const publicDir = path.join(__dirname, 'public');
+const interceptionPublicDir = path.join(__dirname, 'public');
+const expectsWaitsPublicDir = path.join(__dirname, '../../expects-waits/app/public');
 const port = 4173;
 
 const mimeTypes = {
@@ -25,7 +26,7 @@ function sendJson(res, statusCode, payload, extraHeaders = {}) {
   res.end(body);
 }
 
-async function serveStatic(res, pathname) {
+async function serveStatic(res, publicDir, pathname) {
   const safePath = pathname === '/' ? '/index.html' : pathname;
   const filePath = path.join(publicDir, safePath);
 
@@ -58,8 +59,14 @@ createServer(async (req, res) => {
     return;
   }
 
-  await serveStatic(res, url.pathname);
+  if (url.pathname === '/expects-waits' || url.pathname.startsWith('/expects-waits/')) {
+    const nestedPath = url.pathname.replace('/expects-waits', '') || '/';
+    await serveStatic(res, expectsWaitsPublicDir, nestedPath);
+    return;
+  }
+
+  await serveStatic(res, interceptionPublicDir, url.pathname);
 }).listen(port, '127.0.0.1', () => {
   // eslint-disable-next-line no-console
-  console.log(`Interception demo app running on http://127.0.0.1:${port}`);
+  console.log(`Playwright learning lab server running on http://127.0.0.1:${port}`);
 });

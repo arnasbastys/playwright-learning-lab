@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Expects + Waits Lab</title>
+    <link rel="stylesheet" href="/expects-waits/styles.css" />
+  </head>
+  <body>
+    <main class="wrap">
+      <header>
+        <p class="eyebrow">Topic 02</p>
+        <h1>Expects + Waits Playground</h1>
+        <p>
+          The UI below changes over time so tests can rely on Playwright's waiting assertions instead of manual sleeps.
+        </p>
+      </header>
+
+      <section class="panel">
+        <h2>Actionability</h2>
+        <button id="delayed-action" disabled>Run delayed action</button>
+        <p data-testid="delayed-result" class="muted"></p>
+      </section>
+
+      <section class="panel">
+        <h2>Auto-Retry Text</h2>
+        <p data-testid="sync-status" class="badge">Syncing records...</p>
+      </section>
+
+      <section class="panel">
+        <h2>Polling</h2>
+        <p>Background job progress: <strong data-testid="job-progress">0%</strong></p>
+      </section>
+
+      <section class="panel" data-testid="save-panel" data-phase="idle">
+        <h2>Custom Matcher + toPass</h2>
+        <button id="start-save">Start background save</button>
+        <p data-testid="save-text" class="muted">Waiting to start...</p>
+      </section>
+    </main>
+
+    <script type="module" src="/expects-waits/app.js"></script>
+  </body>
+</html>
