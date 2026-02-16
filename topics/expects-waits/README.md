@@ -1,6 +1,6 @@
 # Expects + Waits Topic
 
-This module demonstrates how Playwright assertions provide built-in waiting and retry behavior.
+This topic shows the nice part of Playwright assertions: they wait and retry for you, so tests read like intent instead of timer choreography.
 
 ## What this covers
 
@@ -12,7 +12,7 @@ This module demonstrates how Playwright assertions provide built-in waiting and 
 
 ## Why this matters
 
-In real apps, UI and backend state rarely settles instantly. Expressive assertions let tests stay deterministic without manual `waitForTimeout` calls.
+Real apps are async by default. Good assertions keep tests stable without sprinkling `waitForTimeout` everywhere and hoping for the best.
 
 ## Command
 
