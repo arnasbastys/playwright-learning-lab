@@ -5,12 +5,17 @@ import { fileURLToPath } from 'node:url';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const interceptionPublicDir = path.join(__dirname, 'public');
-const expectsWaitsPublicDir = path.join(__dirname, '../../expects-waits/app/public');
-const apiContextPublicDir = path.join(__dirname, '../../api-request-context/app/public');
+const interceptionPublicDir = path.join(__dirname, 'topics/interception/app/public');
+const expectsWaitsPublicDir = path.join(__dirname, 'topics/expects-waits/app/public');
+const apiContextPublicDir = path.join(__dirname, 'topics/api-request-context/app/public');
 const port = 4173;
 let labItems = [];
 let labItemId = 1;
+const catalogProducts = [
+  { id: 'P-001', title: 'Trail Backpack', price: 12900, inStock: true },
+  { id: 'P-002', title: 'Desk Lamp', price: 4900, inStock: true },
+  { id: 'P-003', title: 'Mechanical Keyboard', price: 15900, inStock: false }
+];
 
 const mimeTypes = {
   '.html': 'text/html; charset=utf-8',
@@ -118,6 +123,11 @@ createServer(async (req, res) => {
     labItems = [];
     labItemId = 1;
     sendJson(res, 200, { ok: true });
+    return;
+  }
+
+  if (url.pathname === '/api/products' && req.method === 'GET') {
+    sendJson(res, 200, { products: catalogProducts });
     return;
   }
 

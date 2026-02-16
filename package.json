@@ -7,7 +7,7 @@
   },
   "scripts": {
     "test": "playwright test",
-    "test:interception": "playwright test topics/interception/tests/interception.spec.ts",
+    "test:interception": "playwright test topics/interception/tests",
     "test:expects-waits": "playwright test topics/expects-waits/tests/expects-waits.spec.ts",
     "test:api-request-context": "playwright test topics/api-request-context/tests/api-request-context.spec.ts",
     "test:ui": "playwright test --ui",

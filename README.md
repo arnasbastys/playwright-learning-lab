@@ -13,7 +13,7 @@ Small Playwright playground split by topic. Each topic has its own tiny app and 
 
 - `topics/`
 - `topics/interception/app/`: fake checkout UI for request mocking and failure states
-- `topics/interception/tests/`: interception cases (success, API errors, malformed payloads, hard network fail)
+- `topics/interception/tests/`: interception cases plus response-surgery (`route.fetch` + payload mutation)
 - `topics/expects-waits/app/`: async UI playground for matcher-driven waiting
 - `topics/expects-waits/tests/`: waits/assertions (`toHaveText`, `expect.poll`, `toPass`, custom matcher)
 - `topics/api-request-context/app/`: minimal list UI backed by server state

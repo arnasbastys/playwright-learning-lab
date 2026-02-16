@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Response Surgery Lab</title>
+    <link rel="stylesheet" href="/response-surgery.css" />
+  </head>
+  <body>
+    <main class="wrap">
+      <p class="eyebrow">Topic 04</p>
+      <h1>Response Surgery: real fetch, mutated payload</h1>
+      <p class="lead">
+        The UI fetches real API data. Tests can intercept that response, edit selected fields, and verify edge-case rendering without mocking the whole endpoint.
+      </p>
+
+      <section class="panel">
+        <h2>Catalog</h2>
+        <p data-testid="catalog-state" class="muted">Loading products...</p>
+        <ul data-testid="catalog-list"></ul>
+      </section>
+    </main>
+
+    <script type="module" src="/response-surgery.js"></script>
+  </body>
+</html>
