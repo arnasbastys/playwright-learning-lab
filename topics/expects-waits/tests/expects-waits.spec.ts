@@ -25,7 +25,9 @@ test.describe('expects and waits topic', () => {
     await expect
       .poll(
         async () => {
-          return await page.evaluate(() => (window as Window & { __jobProgress: number }).__jobProgress);
+          return await page.evaluate(
+            () => (window as unknown as Window & { __jobProgress: number }).__jobProgress
+          );
         },
         {
           message: 'background progress should eventually reach 100%',

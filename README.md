@@ -20,6 +20,8 @@ Small Playwright playground split by topic. Each topic has its own tiny app and 
 - `topics/api-request-context/tests/`: seed/cleanup data via API before UI assertions
 - `topics/emulation-context/app/`: location/locale/device-aware demo surface
 - `topics/emulation-context/tests/`: geolocation, permissions, locale/timezone, mobile, offline emulation
+- `topics/fixtures/app/`: fixture lifecycle demo surface for worker tenants, notes, and audit events
+- `topics/fixtures/tests/`: test-scoped, worker-scoped, automatic, and option fixtures
 
 More topics can be added as siblings, for example `topics/fixtures`, `topics/auth`, `topics/har-replay`.
 
@@ -37,6 +39,7 @@ yarn test:interception
 yarn test:expects-waits
 yarn test:api-request-context
 yarn test:emulation-context
+yarn test:fixtures
 ```
 
 ## Useful scripts
@@ -46,5 +49,6 @@ yarn test:emulation-context
 - `yarn test:expects-waits`: run only expects + waits topic
 - `yarn test:api-request-context`: run APIRequestContext seed/cleanup topic
 - `yarn test:emulation-context`: run geolocation/locale/device emulation topic
+- `yarn test:fixtures`: run custom fixture scope topic
 - `yarn test:ui`: open Playwright UI mode
 - `yarn test:headed`: run headed Chromium for visual debugging

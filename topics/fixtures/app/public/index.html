@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Fixtures Scope Lab</title>
+    <link rel="stylesheet" href="/fixtures/styles.css" />
+  </head>
+  <body>
+    <main class="shell">
+      <p class="eyebrow">Playwright Learning Lab</p>
+      <h1>Fixtures Scope Lab</h1>
+      <p class="lede">
+        A tiny surface backed by test-created tenants, notes, and audit events.
+      </p>
+
+      <section class="panel" aria-labelledby="tenant-heading">
+        <h2 id="tenant-heading">Worker tenant</h2>
+        <dl class="facts">
+          <div>
+            <dt>Tenant id</dt>
+            <dd data-testid="tenant-id">loading</dd>
+          </div>
+          <div>
+            <dt>Tenant label</dt>
+            <dd data-testid="tenant-label">loading</dd>
+          </div>
+          <div>
+            <dt>Fixture profile</dt>
+            <dd data-testid="profile">loading</dd>
+          </div>
+        </dl>
+      </section>
+
+      <section class="panel" aria-labelledby="notes-heading">
+        <div class="panel-heading">
+          <h2 id="notes-heading">Test notes</h2>
+          <button type="button" data-testid="refresh">Refresh</button>
+        </div>
+        <p data-testid="note-count">0 note(s)</p>
+        <ul data-testid="note-list"></ul>
+      </section>
+
+      <section class="panel" aria-labelledby="audit-heading">
+        <h2 id="audit-heading">Automatic fixture audit</h2>
+        <ul data-testid="audit-list"></ul>
+      </section>
+    </main>
+    <script type="module" src="/fixtures/app.js"></script>
+  </body>
+</html>
