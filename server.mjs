@@ -9,9 +9,16 @@ const interceptionPublicDir = path.join(__dirname, 'topics/interception/app/publ
 const expectsWaitsPublicDir = path.join(__dirname, 'topics/expects-waits/app/public');
 const apiContextPublicDir = path.join(__dirname, 'topics/api-request-context/app/public');
 const emulationContextPublicDir = path.join(__dirname, 'topics/emulation-context/app/public');
+const fixturesPublicDir = path.join(__dirname, 'topics/fixtures/app/public');
 const port = 4173;
 let labItems = [];
 let labItemId = 1;
+let fixtureTenantId = 1;
+let fixtureNoteId = 1;
+let fixtureEventId = 1;
+let fixtureTenants = [];
+let fixtureNotes = [];
+let fixtureEvents = [];
 const catalogProducts = [
   { id: 'P-001', title: 'Trail Backpack', price: 12900, inStock: true },
   { id: 'P-002', title: 'Desk Lamp', price: 4900, inStock: true },
@@ -112,6 +119,8 @@ async function serveStatic(res, publicDir, pathname) {
 createServer(async (req, res) => {
   const url = new URL(req.url ?? '/', `http://${req.headers.host}`);
   const labItemIdMatch = url.pathname.match(/^\/api\/lab-items\/(\d+)$/);
+  const fixtureTenantMatch = url.pathname.match(/^\/api\/fixtures\/tenants\/([^/]+)$/);
+  const fixtureNoteMatch = url.pathname.match(/^\/api\/fixtures\/notes\/(\d+)$/);
 
   if (url.pathname === '/api/checkout' && req.method === 'POST') {
     sendJson(res, 200, {
@@ -177,6 +186,139 @@ createServer(async (req, res) => {
     return;
   }
 
+  if (url.pathname === '/api/fixtures/tenants' && req.method === 'POST') {
+    const payload = await readJsonBody(req);
+
+    if (!payload || typeof payload.label !== 'string' || payload.label.trim() === '') {
+      sendJson(res, 400, { message: 'tenant label is required.' });
+      return;
+    }
+
+    const tenant = {
+      id: `tenant-${fixtureTenantId++}`,
+      label: payload.label.trim(),
+      workerIndex: Number.isInteger(payload.workerIndex) ? payload.workerIndex : null,
+      createdAt: new Date().toISOString()
+    };
+
+    fixtureTenants.push(tenant);
+    sendJson(res, 201, { tenant });
+    return;
+  }
+
+  if (url.pathname === '/api/fixtures/tenants' && req.method === 'GET') {
+    sendJson(res, 200, { tenants: fixtureTenants });
+    return;
+  }
+
+  if (fixtureTenantMatch && req.method === 'GET') {
+    const tenant = fixtureTenants.find((candidate) => candidate.id === fixtureTenantMatch[1]);
+
+    if (!tenant) {
+      sendJson(res, 404, { message: 'tenant not found.' });
+      return;
+    }
+
+    sendJson(res, 200, { tenant });
+    return;
+  }
+
+  if (fixtureTenantMatch && req.method === 'DELETE') {
+    const tenantId = fixtureTenantMatch[1];
+    fixtureTenants = fixtureTenants.filter((tenant) => tenant.id !== tenantId);
+    fixtureNotes = fixtureNotes.filter((note) => note.tenantId !== tenantId);
+    fixtureEvents = fixtureEvents.filter((event) => event.tenantId !== tenantId);
+    sendJson(res, 200, { ok: true });
+    return;
+  }
+
+  if (url.pathname === '/api/fixtures/notes' && req.method === 'GET') {
+    const tenantId = url.searchParams.get('tenantId');
+    const notes = tenantId
+      ? fixtureNotes.filter((note) => note.tenantId === tenantId)
+      : fixtureNotes;
+
+    sendJson(res, 200, { notes });
+    return;
+  }
+
+  if (url.pathname === '/api/fixtures/notes' && req.method === 'POST') {
+    const payload = await readJsonBody(req);
+
+    if (
+      !payload ||
+      typeof payload.tenantId !== 'string' ||
+      typeof payload.title !== 'string' ||
+      payload.title.trim() === ''
+    ) {
+      sendJson(res, 400, { message: 'tenantId and title are required.' });
+      return;
+    }
+
+    const tenantExists = fixtureTenants.some((tenant) => tenant.id === payload.tenantId);
+
+    if (!tenantExists) {
+      sendJson(res, 404, { message: 'tenant not found.' });
+      return;
+    }
+
+    const note = {
+      id: fixtureNoteId++,
+      tenantId: payload.tenantId,
+      title: payload.title.trim(),
+      profile: typeof payload.profile === 'string' ? payload.profile : 'default',
+      createdAt: new Date().toISOString()
+    };
+
+    fixtureNotes.push(note);
+    sendJson(res, 201, { note });
+    return;
+  }
+
+  if (fixtureNoteMatch && req.method === 'DELETE') {
+    const noteId = Number(fixtureNoteMatch[1]);
+    fixtureNotes = fixtureNotes.filter((note) => note.id !== noteId);
+    sendJson(res, 200, { ok: true });
+    return;
+  }
+
+  if (url.pathname === '/api/fixtures/events' && req.method === 'GET') {
+    const tenantId = url.searchParams.get('tenantId');
+    const events = tenantId
+      ? fixtureEvents.filter((event) => event.tenantId === tenantId)
+      : fixtureEvents;
+
+    sendJson(res, 200, { events });
+    return;
+  }
+
+  if (url.pathname === '/api/fixtures/events' && req.method === 'POST') {
+    const payload = await readJsonBody(req);
+
+    if (
+      !payload ||
+      typeof payload.tenantId !== 'string' ||
+      typeof payload.name !== 'string' ||
+      payload.name.trim() === ''
+    ) {
+      sendJson(res, 400, { message: 'tenantId and name are required.' });
+      return;
+    }
+
+    const event = {
+      id: fixtureEventId++,
+      tenantId: payload.tenantId,
+      name: payload.name.trim(),
+      testTitle: typeof payload.testTitle === 'string' ? payload.testTitle : '',
+      status: typeof payload.status === 'string' ? payload.status : '',
+      createdAt: new Date().toISOString()
+    };
+
+    fixtureEvents.push(event);
+    sendJson(res, 201, { event });
+    return;
+  }
+
   if (url.pathname === '/expects-waits' || url.pathname.startsWith('/expects-waits/')) {
     const nestedPath = url.pathname.replace('/expects-waits', '') || '/';
     await serveStatic(res, expectsWaitsPublicDir, nestedPath);
@@ -192,6 +334,12 @@ createServer(async (req, res) => {
   if (url.pathname === '/emulation-context' || url.pathname.startsWith('/emulation-context/')) {
     const nestedPath = url.pathname.replace('/emulation-context', '') || '/';
     await serveStatic(res, emulationContextPublicDir, nestedPath);
+    return;
+  }
+
+  if (url.pathname === '/fixtures' || url.pathname.startsWith('/fixtures/')) {
+    const nestedPath = url.pathname.replace('/fixtures', '') || '/';
+    await serveStatic(res, fixturesPublicDir, nestedPath);
     return;
   }
 
